@@ -1,0 +1,23 @@
+.input{
+    width: 250px;
+}
+.btn-register{
+    margin-top: 20px;
+    background: rgb(182, 234, 255);
+    margin-right: 10px;
+}
+.btn-login{
+    margin-top: 20px;
+    margin-right: 10px;
+    background: rgb(175, 253, 161);
+}
+.content{
+    text-align: center;
+    padding: 30px;
+}
+.btn{
+    margin: 5px;
+}
+.error-data{
+    border-color: red;
+}

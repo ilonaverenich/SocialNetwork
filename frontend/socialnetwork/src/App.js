@@ -1,26 +1,14 @@
 import './App.css';
-import {Route , Routes} from 'react-router-dom';
-import Auth from './Components/Auth'
-import Register from './Components/Register';
-import MainPage from './Components/MainPage';
-import Main from './Components/users/Main'
+import {useRoutes} from './routs';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const statusAuth = useSelector((store) => store.data.statusAuth);
+  const routes = useRoutes(statusAuth) 
+  console.log(statusAuth)
   return (
     <div className="App">
-      <Routes>
-        <Route path='/' element={<MainPage/>}/>
-      </Routes>
-      <Routes>
-        <Route path='/auth' element={<Auth/>}/>
-      </Routes>
-      <Routes>
-        <Route path='/register' element={<Register/>}/>
-      </Routes>
-      <Routes>
-        <Route path='/main' element={<Main/>}/>
-      </Routes>
- 
+       {routes} 
 
     </div>
   );

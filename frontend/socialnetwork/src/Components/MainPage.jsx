@@ -2,7 +2,7 @@ import {Button} from 'antd';
 import {useNavigate} from 'react-router-dom';
 
 
-function MainPage() {
+function  MainPage() {
     const navigate = useNavigate()
  
   return (

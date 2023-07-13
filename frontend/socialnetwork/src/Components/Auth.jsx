@@ -1,27 +1,30 @@
 import {useNavigate } from 'react-router-dom';
-import {Button, Input} from 'antd';
+import {Button, Input, message} from 'antd';
 import {useState} from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { useDispatch, useSelector} from 'react-redux';
+import {getStatusAuth} from '../redux/mainReducer'
+
 
 function Auth() {
-  const navigate = useNavigate()
-
-
-  const [datas,setDatas] = useState([])
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [value, setValue] = useState({
     email:'',
     password:''
-  })
-  
+  }) 
+  const statusAuth = useSelector((store) => store.data.statusAuth);
+
   function sendData(){
     console.log(value)
     axios.post('http://localhost:1000/auth',value).then(res=>{
       localStorage.setItem('token', res.data.token);
-      navigate('/main')
-    })
+      dispatch(getStatusAuth(true))
+      console.log(statusAuth)
+      navigate('/')
+    }).catch(err=>message.error('Неверный логин или пароль!'))
   }
-  console.log(datas)
+ 
   return (
     <div className='content'>
         <h3>Войти в аккаунт</h3>

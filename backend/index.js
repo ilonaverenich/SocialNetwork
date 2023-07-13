@@ -37,16 +37,35 @@ app.post('/register',(req,res)=>{
      
 })
 
-app.post('/auth',(req,res)=>{
-    const {token} = req.body;
-    decoded = jwt_decode(token)
-    console.log(decoded)
-    User.findOne({id:decoded.userId}).then(r=>console.log(r))
-    res.json(decoded)
+app.post('/auth',(req,res)=>{ 
+    const {email,password} = req.body;
+
+    User.findOne({password:password}).then((result)=>{
+      
+        console.log('result',result)
+        if (result && result.password === password && result.email === email) {
+            const token = createToken(result._id); 
+            res.json({ token });
+            
+        } else{
+            res.status(401).send('Неверный логин или пароль!');
+        }
+    })
+    
+
 })
 
 app.get('/users',(req,res)=>{
     
+})
+
+app.use('/main',(req,res)=>{
+    const {token} = req.body;
+    const decodedToken = jwt_decode(token); // Распарсинг токена
+    const userId = decodedToken.userId;
+    console.log(userId)
+     User.findOne({_id:userId}).then(result=>res.json(result)).catch(err=>console.log(err)) 
+   ; 
 })
 
 

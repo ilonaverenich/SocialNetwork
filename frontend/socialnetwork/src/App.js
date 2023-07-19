@@ -5,11 +5,10 @@ import { useSelector } from 'react-redux';
 function App() {
   const statusAuth = useSelector((store) => store.data.statusAuth);
   const routes = useRoutes(statusAuth) 
-  console.log(statusAuth)
+
   return (
     <div className="App">
        {routes} 
-
     </div>
   );
 }

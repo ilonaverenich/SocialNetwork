@@ -12,8 +12,36 @@ const UserSchema = new Schema ({
     password: {
         type: String,
         minlength: 2
+    },
+    profileImage: {
+        type: String,
+    },
+    status: {
+        type: String
+    },
+    gender:{
+        type: String
+    },
+    cityOfResidence:{
+        type: String
+    },
+    dateOfBirth: {
+        type: String
+    },
+    maritalStatus:{
+        type: String
+    },
+    placeOfWork:{
+        type: String
+    },
+    interests:{
+        type: String
+    },
+    image: {
+        type:String
     }
-})
+}
+)
 
 const User = model('User',UserSchema)
 

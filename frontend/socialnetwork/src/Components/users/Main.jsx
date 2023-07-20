@@ -1,11 +1,12 @@
 import axios from 'axios';
 import {useState, useEffect} from 'react';
 import { Input} from 'antd';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import TableMainPage from './TableMainPage';
 import Menu from './Menu'
 import Header from '../Header';
 import Newsline from './Newsline'
+import  { setStatusAuth }  from '../../redux/mainReducer';
 
 
 function Main() {
@@ -19,12 +20,16 @@ function Main() {
   const state = useSelector((store) => store.data.state);
   const statusAuth = useSelector((store) => store.data.statusAuth);
   const [sta,setSta] = useState(false)
-
+  const dispatch = useDispatch()
   
   useEffect(()=>{
     axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data));
     },[])
 
+    const date = new Date(data.dateOfBirth);
+    const currentDate = new Date();
+    const yearsDiff = currentDate.getFullYear() - date.getFullYear();
+    console.log(yearsDiff)
 
     useEffect(()=>{
       const email = data.email;
@@ -87,7 +92,7 @@ function Main() {
        
             <div className='body-name'>
            
-             <div className='name-person'> {data.name}  { data.surname}  {statusAuth?<span className='active'>online</span>:''} </div>
+             <div className='name-person'> {data.name}  { data.surname}, {yearsDiff? yearsDiff:''}  {statusAuth?<span className='active'>online</span>:''} </div>
              
              {!status ?
              <div className='status' onClick={()=>setStatusHandler()}>{(data.status) == "" ?'установите статус': data.status}</div>: <Input onChange={(e)=>setStatusData(e.target.value)} value={statusData} className='input' onBlur={()=>saveHandler()}/>}</div>
@@ -95,7 +100,7 @@ function Main() {
 
             </div>  
 
-                {stateEdit? <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />:''}
+                {sta? <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />:''}
 
             <div className='edit-content'>
               <div className='bold block'>Контактная информация</div>
@@ -146,8 +151,8 @@ function Main() {
           
           </div>       
       </div>
-      <div className='footer'>2023, Ilona Verenich</div>
-  
+    {/*   <div className='footer'>2023, Ilona Verenich</div> */}
+
     </div>
   )
 }

@@ -2,7 +2,7 @@ import {useEffect, useState} from 'react'
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios'
 import {useDispatch, useSelector} from 'react-redux';
-import  getStatusAuth  from '../redux/mainReducer';
+import { setStatusAuth } from '../redux/mainReducer';
 
 function Header() {
     const token = localStorage.getItem('token');
@@ -10,14 +10,17 @@ function Header() {
     const dispatch = useDispatch()
 
     const [data,setData] = useState([])
+ 
     useEffect(()=>{
         axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data));
     },[])
 
-    function exit (){
-       dispatch(getStatusAuth(false)) 
-        navigate('/')
-      }
+/* 
+    function exits (){
+    
+      navigate('/')
+      dispatch(getStatusAuth(false)) 
+      } */
 
   return (
     <div className='header'>
@@ -25,7 +28,7 @@ function Header() {
     <div className='header-setting-menu'>
       <div><img src="https://i.postimg.cc/T2BKvg9h/icons8-person-30.png" alt= "" /></div>
       <div>{data.email}</div>
-      <div className='exit' onClick={exit}>Выйти</div>
+      <div className='exit' onClick={()=>dispatch(setStatusAuth(false)) }>Выйти</div>
     </div>
   </div>
   )

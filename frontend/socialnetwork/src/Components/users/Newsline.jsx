@@ -5,15 +5,15 @@ import axios from 'axios';
 function Newsline() {
   const token = localStorage.getItem('token');
   const [data,setData] = useState([])
-  const [value, setValue] = useState('')
+  const [values, setValues] = useState('')
   const [list, setList] = useState([])
   const [count, setCount] = useState(null)
   
   
   function addList() {
-    setList([...list, value])
-    setValue('')
-    console.log(list)
+    setList([...list, values])
+    setValues('')
+  
   }
 
   useEffect(()=>{
@@ -26,19 +26,22 @@ function Newsline() {
         <hr></hr>
       <div className='container-newsline'>
       <img width='50px' className='img' height='50px' src={`http://localhost:1000/${data.image}`} alt="Изображение" />
-      <Input className='input-newsline' value={value} onChange={e=>setValue(e.target.value)} placeholder='Что нового?'></Input>
+      <Input className='input-newsline' onChange={e=>setValues(e.target.value)} placeholder='Что нового?'></Input>
       <Button className='btn-newsline' onClick={()=>addList()}>Отправить</Button>
       </div>
       <div className='content-newsline'>
       {list && list.map(comment=><div className='block-newsline'>
-        <div className='box-newsline'>
-        <div className='icon-newsline'><img width='35px' className='img' height='35px' src={`http://localhost:1000/${data.image}`} alt="Изображение" /></div>
-        <div className='comment-newsline'>{comment}</div>
-        </div>
+          <div className='box-newsline'>
+                <div className='icon-newsline'><img width='35px' className='img' height='35px' src={`http://localhost:1000/${data.image}`} alt="Изображение" /></div>
+                <div className='comment-newsline'>{comment}</div>
+          </div> 
+
+    <div>
+        <div className=''><img src="https://i.postimg.cc/c4jxWM0N/icons8-delete-24.png"></img></div>
+        <div className=''><img src="https://i.postimg.cc/PrQMYBwy/icons8-like-30.png"  alt="" /></div>
+    </div>
     
-        <div className=''><img src="https://i.postimg.cc/PrQMYBwy/icons8-like-30.png" onClick={()=>setCount(count+1)} alt="" />{count}</div>
-        
-      </div>)}
+  </div>)}
       
       </div>
       </div>

@@ -11,29 +11,30 @@ const initialValue = {
   }
 };
 
-export const getStatusAuth = createAction('GET_STATUS');
+export const setStatusAuth  = createAction('GET_STATUS');
 export const getUser = createAction('GET_USER');
 export const getStatus = createAction('GET_STATUS_USER');
 export const getUserData = createAction('GET_USER_DATA');
 export const setStateEdit = createAction('SET_STATE_EDIT');
 export const setState = createAction('SET_STATE');
 
-
-export default createReducer(initialValue, {
-  [getStatusAuth]: function (state, action) {
-    state.statusAuth = action.payload;
-  },
-  [getUser]: function (state, action) {
-    state.user.token = action.payload;
-  },
-  [getUserData]: function (state, action) {
-    state.userData = action.payload;
-  },
-  [setStateEdit]: function (state, action) {
-    state.user.stateEdit = action.payload;
-  
-  },
-  [setState]: function (state, action) {
-    state.state = !action.payload;
-  },
+const reducer = createReducer(initialValue, (builder) => {
+  builder
+    .addCase(setStatusAuth , (state, action) => {
+      state.statusAuth = action.payload;
+    })
+    .addCase(getUser, (state, action) => {
+      state.user.token = action.payload;
+    })
+    .addCase(getUserData, (state, action) => {
+      state.userData = action.payload;
+    })
+    .addCase(setStateEdit, (state, action) => {
+      state.user.stateEdit = action.payload;
+    })
+    .addCase(setState, (state, action) => {
+      state.state = !action.payload;
+    });
 });
+
+export default reducer;

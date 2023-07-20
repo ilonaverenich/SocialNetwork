@@ -3,7 +3,7 @@ import {Button, Input, message} from 'antd';
 import {useState} from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector} from 'react-redux';
-import {getStatusAuth} from '../redux/mainReducer'
+import {setStatusAuth} from '../redux/mainReducer'
 
 
 function Auth() {
@@ -19,14 +19,14 @@ function Auth() {
     console.log(value)
     axios.post('http://localhost:1000/auth',value).then(res=>{
       localStorage.setItem('token', res.data.token);
-      dispatch(getStatusAuth(true))
+      dispatch(setStatusAuth(true))
       console.log(statusAuth)
       navigate('/')
     }).catch(err=>message.error('Неверный логин или пароль!'))
   }
  
   return (
-    <div className='content'>
+    <div className='content main'>
         <h3>Войти в аккаунт</h3>
         <p>Введите email:</p>
         <Input className='input' type='email' onChange={(e)=>setValue({

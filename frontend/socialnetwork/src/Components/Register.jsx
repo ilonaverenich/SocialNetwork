@@ -53,7 +53,7 @@ function Register() {
   }
 
   return (
-    <div className='content'>
+    <div className='content main'>
       <h3>Регистрация нового пользователя:</h3>
       <p>Введите имя:</p>
       <Input className={state.stateName ? 'input error-data' : 'input'} onChange={(e) => setRegister({ ...register, name: e.target.value })} />

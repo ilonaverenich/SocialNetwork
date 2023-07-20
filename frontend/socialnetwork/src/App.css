@@ -1,3 +1,8 @@
+.main{
+    background: rgb(250, 250, 250);
+    height: 90vh;
+}
+
 .input{
     width: 250px;
 
@@ -42,7 +47,7 @@
 }
 .container{
     display: flex;
-    width: 100vw;
+    width: 90vw;
     justify-content: center;
 
 }
@@ -103,12 +108,12 @@
 
 }
 .table{
-    width: 100%;
+    width: 90%;
     border: 1px solid rebeccapurple;
     text-align: center;
 }
 .table-main{
-    width: 90%;
+    width: 80%;
      margin: 0 auto;
     font-size: 17px;
    
@@ -178,7 +183,7 @@ td{
 }
 .input-newsline{
     padding: 8px;
-    width: 70%;
+    width: 60%;
     margin: 20px;
     font-size: 18px;
 }

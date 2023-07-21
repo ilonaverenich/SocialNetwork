@@ -2,7 +2,7 @@ import {Input, Select,Radio} from 'antd';
 import {useState,useEffect} from 'react';
 import axios from 'axios';
 import {useDispatch,useSelector} from 'react-redux';
-import {getUserData} from '../../redux/mainReducer'
+import {setUserData} from '../../redux/mainReducer'
 
 
 
@@ -33,7 +33,7 @@ function TableMainPage({email}) {
 
   })
   useEffect(()=>{
-   dispatch(getUserData(contsInfo))
+   dispatch(setUserData(contsInfo))
   })
 
 

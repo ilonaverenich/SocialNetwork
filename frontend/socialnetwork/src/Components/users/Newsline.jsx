@@ -26,7 +26,7 @@ function Newsline() {
         <hr></hr>
       <div className='container-newsline'>
       <img width='50px' className='img' height='50px' src={`http://localhost:1000/${data.image}`} alt="Изображение" />
-      <Input className='input-newsline' onChange={e=>setValues(e.target.value)} placeholder='Что нового?'></Input>
+      <Input className='input-newsline' onChange={e=>setValues(e.target.value)} placeholder='Написать на стенке'></Input>
       <Button className='btn-newsline' onClick={()=>addList()}>Отправить</Button>
       </div>
       <div className='content-newsline'>

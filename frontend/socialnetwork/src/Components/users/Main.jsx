@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import TableMainPage from './TableMainPage';
 import Menu from './Menu'
 import Header from '../Header';
-import Newsline from './Newsline'
-import  { setStatusAuth }  from '../../redux/mainReducer';
+import Newsline from './Newsline';
+
 
 
 function Main() {
@@ -15,15 +15,13 @@ function Main() {
   const [status,setStatus] = useState(false);
   const [statusData,setStatusData] = useState('');
   const [photo,setPhoto] = useState('');
-  const stateEdit = useSelector((store) => store.data.user.stateEdit);
   const contsInfo = useSelector((store) => store.data.userData);
   const state = useSelector((store) => store.data.state);
   const statusAuth = useSelector((store) => store.data.statusAuth);
   const [sta,setSta] = useState(false)
-  const dispatch = useDispatch()
   
   useEffect(()=>{
-    axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data));
+    setTimeout(()=>{ axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data))},1000)
     },[])
 
     const date = new Date(data.dateOfBirth);
@@ -75,7 +73,10 @@ function Main() {
 
   }
   return (
-    <div className='personal-page'>
+    <div>
+      {data.length === 0 ? (<div class="load">
+    <hr/><hr/><hr/><hr/>
+    </div>):  <div className='personal-page'>
     <Header/>
       <div className='container'>
           <Menu/>      
@@ -89,7 +90,7 @@ function Main() {
             ):<img width='120px'  src="https://i.postimg.cc/x1FJjZnH/icons8-person-80.png" alt="person" />}
             
             </div>
-       
+           
             <div className='body-name'>
            
              <div className='name-person'> {data.name}  { data.surname}, {yearsDiff? yearsDiff:''}  {statusAuth?<span className='active'>online</span>:''} </div>
@@ -151,8 +152,11 @@ function Main() {
           
           </div>       
       </div>
-    {/*   <div className='footer'>2023, Ilona Verenich</div> */}
+   
 
+      </div> }
+   
+   
     </div>
   )
 }

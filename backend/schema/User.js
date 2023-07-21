@@ -1,5 +1,18 @@
 const {Schema, model} = require ('mongoose');
 
+const CommentSchema = new Schema({
+    postId: String,
+    commenterId: String,
+    comment: String,
+    likes: Number,
+    photo: String,
+    timestamp: {
+      type: Date,
+      default: Date.now
+    }
+  });
+
+
 const UserSchema = new Schema ({
     id: String,
     name: String,
@@ -39,7 +52,8 @@ const UserSchema = new Schema ({
     },
     image: {
         type:String
-    }
+    },
+    comments: [CommentSchema],
 }
 )
 

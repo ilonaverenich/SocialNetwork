@@ -7,7 +7,7 @@ function Menu() {
             <div className='menu-link'>
                 <div onClick={()=>navigate('/')}>Моя страница</div>
                 <div onClick={()=>navigate('/friends')}>Друзья</div>
-                <div>Сообщения</div>
+                <div onClick={()=>navigate('/message')}>Сообщения</div>
             </div>
     </div>
   )

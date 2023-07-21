@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Menu from './Menu';
 import Header from '../Header';
 import axios from 'axios';
 import { getMainUser } from '../../redux/mainReducer';
-import SpinPreloder from './SpinPreloder';
+
 
 function Friends() {
   const token = localStorage.getItem('token');

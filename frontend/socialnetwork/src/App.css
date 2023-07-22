@@ -201,22 +201,27 @@ td{
     margin-left: 100px;
   
 }
+.content-newsline-icons{
+    display: flex;
+    align-items: center;
+}
 .block-newsline {
-    border-radius: 20px;
-    background: rgb(252, 250, 250);
+    border-radius: 5px;
+    background: rgb(249, 249, 249);
     padding: 0 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 20px;
     margin: 5px;
-    border: 1px solid black;
+
 }
 .icon-newsline{
     padding: 5px;
 }
 .comment-newsline{
-    
+    padding-left: 20px;
+    font-size: 18px;
     display: flex;
     align-items: center;
 }
@@ -226,7 +231,10 @@ td{
     justify-content: center;
 }
 
-
+.file{
+    width: 109px;
+    margin: 0px 20px;
+}
 .load{position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);
     /*change these sizes to fit into your project*/
     width:100px;

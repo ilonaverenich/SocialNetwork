@@ -11,11 +11,15 @@ function Newsline() {
     likes:'',
     comment:''
   })
+
+  const [state, setState] = useState(false)
   const [count, setCount] = useState(null)
   
-  
-  function addList() {
+   useEffect(()=>{
     setList({...list, id: (new Date()).getTime()})
+    },[state]) 
+  function addList() {
+    setState((prev)=>!prev)
     setList({...list, likes: 0})
     setList({...list, comment: values})
 
@@ -24,6 +28,7 @@ function Newsline() {
    /*  axios.post('http://localhost:1000/main',).then(result=>console.log(result)) */
   
   }
+ 
 
   useEffect(()=>{
     axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data));

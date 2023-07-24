@@ -69,6 +69,52 @@ app.post('/auth',(req,res)=>{
 
 })
 
+app.use('/posts',  (req, res) => {
+  const { postId, likes,id, comment } = req.body;
+  console.log(postId, likes, id, comment);
+
+ User.findOne({ id: id })
+  .then((user) => {
+    if (user) {
+      user.comments.push({ postId, likes, comment });
+      return user.save();
+    } else {
+      throw new Error('User not found');
+    }
+  })
+  .then((savedUser) => {
+ 
+    res.status(200).json(savedUser); // Respond with the saved user
+  })
+  .catch((err) => {
+    console.error('Error saving comment:', err);
+
+  });
+
+});
+
+app.use('/deletepost', (req, res) => {
+  const { postId, id } = req.body;
+  console.log(postId, id);
+
+  User.findOne({ id: id })
+    .then((user) => {
+      if (user) {
+        user.comments.pull({ postId: postId });
+        return user.save();
+      } else {
+        throw new Error('Пользователь не найден');
+      }
+    })
+    .then((savedUser) => {
+      res.status(200).json(savedUser); 
+    })
+    .catch((err) => {
+      console.error('Ошибка при сохранении комментария:', err);
+      res.status(500).json({ error: 'Не удалось удалить комментарий' });
+    });
+});
+
 app.post('/status', (req, res) => {
     const { statusData, email } = req.body;
   
@@ -111,7 +157,6 @@ app.use('/img',upload.single('img'),(req,res)=>{
     { new: true }
   )
     .then(updatedUser => {
-      console.log('dddd',updatedUser)
       res.json(updatedUser);
     })
     .catch(error => {

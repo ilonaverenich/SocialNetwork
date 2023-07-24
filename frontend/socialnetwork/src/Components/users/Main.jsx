@@ -21,13 +21,14 @@ function Main() {
   const [sta,setSta] = useState(false)
   
   useEffect(()=>{
-    setTimeout(()=>{ axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data))},500)
+    setTimeout(()=>{ axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data))},1000)
+    console.log(data)
     },[])
 
-    const date = new Date(data.dateOfBirth);
+  const date = new Date(data.dateOfBirth);
     const currentDate = new Date();
     const yearsDiff = currentDate.getFullYear() - date.getFullYear();
-    console.log(yearsDiff)
+    
 
     useEffect(()=>{
       const email = data.email;
@@ -74,7 +75,7 @@ function Main() {
   }
   return (
     <div>
-      {data.length === 0 ? (<div class="load">
+      {data && data.length === 0 ? (<div class="load">
     <hr/><hr/><hr/><hr/>
     </div>):  <div className='personal-page'>
     <Header/>
@@ -85,18 +86,18 @@ function Main() {
            
             <div className='body-img' >
              
-            {data.image ? (
-              <img width='200px' height='200px' src={`http://localhost:1000/${data.image}`} alt="Изображение" />
+            {data && data.image ? (
+              <img width='200px' height='200px' src={`http://localhost:1000/${data && data.image}`} alt="Изображение" />
             ):<img width='120px'  src="https://i.postimg.cc/x1FJjZnH/icons8-person-80.png" alt="person" />}
             
             </div>
            
             <div className='body-name'>
            
-             <div className='name-person'> {data.name}  { data.surname}, {yearsDiff? yearsDiff:''}  {statusAuth?<span className='active'>online</span>:''} </div>
+             <div className='name-person'> {data&& data.name}  {data&& data.surname}  {yearsDiff? yearsDiff:''}   {statusAuth?<span className='active'>online</span>:''} </div>
              
              {!status ?
-             <div className='status' onClick={()=>setStatusHandler()}>{(data.status) == "" ?'установите статус': data.status}</div>: <Input onChange={(e)=>setStatusData(e.target.value)} value={statusData} className='input' onBlur={()=>saveHandler()}/>}</div>
+             <div className='status' onClick={()=>setStatusHandler()}>{(data&& data.status) == "" ?'установите статус': data&& data.status}</div>: <Input onChange={(e)=>setStatusData(e.target.value)} value={statusData} className='input' onBlur={()=>saveHandler()}/>}</div>
         
 
             </div>  
@@ -112,18 +113,18 @@ function Main() {
           {sta ? <TableMainPage data={data} email={data.email}/>:  <table className='table-main'>
       <tr className='tr-main'>
             <td>Ваш пол:</td>
-            <td>{!data.gender ? <span className='status'>Заполните информацию</span> : data.gender }</td>
+            <td>{data&&!data.gender ? <span className='status'>Заполните информацию</span> :data&& data.gender }</td>
         </tr>
         <tr className='tr-main'>
             <td>Город проживания:</td>
             <td> 
-              {!data.cityOfResidence ? <span className='status'>Заполните информацию</span> : data.cityOfResidence }
+              {data&&!data.cityOfResidence ? <span className='status'>Заполните информацию</span> :data&& data.cityOfResidence }
             </td>
         </tr>
         <tr className='tr-main'>
             <td>Дата рождения:</td>
             <td> 
-            {!data.dateOfBirth ? <span className='status'>Заполните информацию</span> : data.dateOfBirth }
+            {data&&!data.dateOfBirth ? <span className='status'>Заполните информацию</span> :data&& data.dateOfBirth }
             </td>
         </tr>
       
@@ -131,18 +132,18 @@ function Main() {
         <tr className='tr-main'>
             <td>Семейное положение:</td>
             <td> 
-            {!data.maritalStatus ? <span className='status'>Заполните информацию</span> : data.maritalStatus }
+            {data&&!data.maritalStatus ? <span className='status'>Заполните информацию</span> :data&& data.maritalStatus }
             </td>
         </tr>
         <tr className='tr-main'>
             <td>Место работы: </td>
             <td> 
-            {!data.placeOfWork ? <span className='status'>Заполните информацию</span> : data.placeOfWork }
+            {data&&!data.placeOfWork ? <span className='status'>Заполните информацию</span> :data&& data.placeOfWork }
             </td>
         </tr>
         <tr className='tr-main'>
             <td>Интересы, хобби: </td>
-            <td>{!data.interests ? <span className='status'>Заполните информацию</span> : data.interests }</td>
+            <td>{data&&!data.interests ? <span className='status'>Заполните информацию</span> :data&& data.interests }</td>
 
         </tr>
     

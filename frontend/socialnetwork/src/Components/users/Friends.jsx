@@ -15,16 +15,16 @@ function Friends() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTimeout(()=>{axios.post('http://localhost:1000/main', { token }).then((res) => setEmail(res.data.email))},1000)
+    setTimeout(()=>{axios.post('http://localhost:1000/main', { token }).then((res) => setEmail(res.data.email))},500)
   }, []);
-
+ 
   useEffect(() => {
     if (email) {
       axios.post('http://localhost:1000/friends', { email }).then((res) => {
         setData(res.data);
       });
     }
-  }, [email]);
+  }, [email]); 
 
   function getPage(user) {
     console.log(user);
@@ -33,7 +33,7 @@ function Friends() {
   }
 
   return (
-    <div>{data.length === 0 ?(<div class="load">
+    <div>{data && data.length === 0 ?(<div class="load">
     <hr/><hr/><hr/><hr/>
   </div>) :  <div className='personal-page'>      
         <Header />

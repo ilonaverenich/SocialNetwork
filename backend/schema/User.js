@@ -2,7 +2,6 @@ const {Schema, model} = require ('mongoose');
 
 const CommentSchema = new Schema({
     postId: String,
-    commenterId: String,
     comment: String,
     likes: Number,
     photo: String,

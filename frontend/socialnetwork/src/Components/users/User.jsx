@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import Header from '../Header';
 import Menu from './Menu';
-import Newsline from './Newsline';
+import Comments from './Comments'
 
 
 function User() {
@@ -78,7 +78,7 @@ function User() {
         </tr>
     
     </table> 
-    <Newsline/>
+    <Comments/>
             </div>
           
         </div>

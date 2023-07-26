@@ -68,30 +68,35 @@ app.post('/auth',(req,res)=>{
     
 
 })
+app.post('/posts', upload.single('image'), (req, res) => {
+  const { postId, likes, comment } = req.body;
+  console.log('comment',comment)
 
-app.use('/posts',  (req, res) => {
-  const { postId, likes,id, comment } = req.body;
-  console.log(postId, likes, id, comment);
+  const id = req.header('id'); 
+  console.log('id',id)
+    const image = req.file;
+  console.log('image',image)
+   // Получаем id из заголовка запроса
 
- User.findOne({ id: id })
-  .then((user) => {
-    if (user) {
-      user.comments.push({ postId, likes, comment });
-      return user.save();
-    } else {
-      throw new Error('User not found');
-    }
-  })
-  .then((savedUser) => {
- 
-    res.status(200).json(savedUser); // Respond with the saved user
-  })
-  .catch((err) => {
-    console.error('Error saving comment:', err);
-
-  });
-
+  User.findOne({_id:id })
+    .then((user) => {
+      if (user) {
+        user.comments.push({ postId, likes, comment, image: image.filename }); // Add the image Buffer to the comment
+        return user.save(); // Save the updated user document
+      } else {
+        throw new Error('User not found');
+      }
+    })
+    .then((savedUser) => {
+      res.status(200).json(savedUser);
+    })
+    .catch((err) => {
+      console.error('Error saving comment:', err);
+      res.sendStatus(500);
+    });
 });
+
+
 
 app.use('/deletepost', (req, res) => {
   const { postId, id } = req.body;
@@ -142,17 +147,15 @@ app.use('/main',(req,res)=>{
     User.findOne({_id:userId}).then(result=>res.json(result)).catch(err=>console.log(err)) 
    ; 
 })
-app.use('/img',upload.single('img'),(req,res)=>{
-  const {email} = req.body;
+app.use('/img', upload.single('img'), (req, res) => {
+  const { email } = req.body;
   const img = req.file;
   const imagePath = img.filename;
-   
- 
+
   User.findOneAndUpdate(
     { email: email },
     {
-
-      image:imagePath
+      image: imagePath,
     },
     { new: true }
   )
@@ -161,12 +164,9 @@ app.use('/img',upload.single('img'),(req,res)=>{
     })
     .catch(error => {
       console.error(error);
-      res.sendStatus(500);
-    });
-
-  res.json(imagePath)
   
-})
+    });
+});
 app.use(('/editprofile',(req,res)=>{
   const {email,gender,cityOfResidence,dateOfBirth,maritalStatus,placeOfWork,interests} = req.body;
 

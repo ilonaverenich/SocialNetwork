@@ -21,7 +21,7 @@ function Main() {
   const [sta,setSta] = useState(false)
   
   useEffect(()=>{
-    setTimeout(()=>{ axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data))},1000)
+    setTimeout(()=>{ axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data))},500)
     console.log(data)
     },[])
 

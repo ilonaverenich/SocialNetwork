@@ -4,7 +4,10 @@ const CommentSchema = new Schema({
     postId: String,
     comment: String,
     likes: Number,
-    photo: String,
+    image: {
+        type: String,
+        required: false // Необязательное поле
+      },
     timestamp: {
       type: Date,
       default: Date.now

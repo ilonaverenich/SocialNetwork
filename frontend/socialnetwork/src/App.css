@@ -253,4 +253,14 @@ td{
     50%{transform:translate(160%, 160%)}
     75%{transform:translate(0, 160%)}
   }
-  
+  .attach{
+    cursor: pointer;
+    padding: 0 10px;
+  }
+  .posts {
+    background: rebeccapurple;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }

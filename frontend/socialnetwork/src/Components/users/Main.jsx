@@ -87,7 +87,7 @@ function Main() {
             <div className='body-img' >
              
             {data && data.image ? (
-              <img width='200px' height='200px' src={`http://localhost:1000/${data && data.image}`} alt="Изображение" />
+              <img width='230px' height='230px' className='body-img-logo' src={`http://localhost:1000/${data && data.image}`} alt="Изображение" />
             ):<img width='120px'  src="https://i.postimg.cc/x1FJjZnH/icons8-person-80.png" alt="person" />}
             
             </div>

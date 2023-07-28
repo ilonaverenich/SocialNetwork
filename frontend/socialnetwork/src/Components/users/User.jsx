@@ -19,7 +19,7 @@ function User() {
            <div className='body-img' >
             
            {userData.image ? (
-             <img width='200px' height='200px' src={`http://localhost:1000/${userData.image}`} alt="Изображение" />
+             <img width='250px'className='body-img-logo' height='250px' src={`http://localhost:1000/${userData.image}`} alt="Изображение" />
            ):<img width='120px'  src="https://i.postimg.cc/x1FJjZnH/icons8-person-80.png" alt="person" />}
            
            </div>
@@ -28,7 +28,7 @@ function User() {
           
             <div className='name-person'> {userData.name}  { userData.surname} </div>
             
-            <div>{userData.status}</div>
+            <div className='body-status'>{userData.status}</div>
             </div>
 
            </div> 

@@ -31,6 +31,39 @@ User.find().then(result => result.filter(el=>el.email!==email)).then(e=>res.send
   
   })
 
+  app.post('/likes', async (req, res) => {
+    const { id, postId } = req.body;
+  
+    try {
+      // Find the user by id
+      const user = await User.findById(id);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Check if the post with the given postId exists in the user's comments array
+      const postIndex = user.comments.findIndex(comment => comment.postId === postId);
+      if (postIndex === -1) {
+        return res.status(404).json({ error: 'Post not found in user comments' });
+      }
+  
+      // If the post exists, check if the user has already liked the post
+      if (user.comments[postIndex].liked) {
+        return res.status(400).json({ error: 'Post already liked by the user' });
+      }
+  
+      // If not liked, set the 'liked' property to true and increase the 'likes' count
+      user.comments[postIndex].liked = true;
+      user.comments[postIndex].likes++;
+  
+      // Save the updated user to the database
+      const savedUser = await user.save();
+      res.status(200).json(savedUser);
+    } catch (err) {
+      console.error('Error handling like:', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
   
 
 app.post('/register',(req,res)=>{
@@ -69,19 +102,14 @@ app.post('/auth',(req,res)=>{
 
 })
 app.post('/posts', upload.single('image'), (req, res) => {
-  const { postId, likes, comment } = req.body;
-  console.log('comment',comment)
-
-  const id = req.header('id'); 
-  console.log('id',id)
-    const image = req.file;
-  console.log('image',image)
+  const { postId, likes, comment,id } = req.body;
+  const image = req.file;
    // Получаем id из заголовка запроса
 
   User.findOne({_id:id })
     .then((user) => {
       if (user) {
-        user.comments.push({ postId, likes, comment, image: image.filename }); // Add the image Buffer to the comment
+        image !== undefined ? user.comments.push({ postId, likes, comment,image: image.filename}) : user.comments.push({ postId, likes, comment}); // Add the image Buffer to the comment
         return user.save(); // Save the updated user document
       } else {
         throw new Error('User not found');
@@ -97,12 +125,11 @@ app.post('/posts', upload.single('image'), (req, res) => {
 });
 
 
-
 app.use('/deletepost', (req, res) => {
   const { postId, id } = req.body;
   console.log(postId, id);
 
-  User.findOne({ id: id })
+  User.findOne({ _id: id })
     .then((user) => {
       if (user) {
         user.comments.pull({ postId: postId });

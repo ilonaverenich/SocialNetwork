@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {Input, Button, Upload} from 'antd'
+import {Input, Button,} from 'antd'
 import axios from 'axios';
 
 function Newsline() {
@@ -7,12 +7,10 @@ function Newsline() {
   const [comments, setComments] = useState([]);
   const [data, setData] = useState({});
   const [values, setValues] = useState('');
-  const [list, setList] = useState({
-    postId: (new Date()).getTime(),
-    likes: 0,
-    photo: ''
-  });
-console.log(data)
+  const [image, setImage] = useState({});
+  const [wallUpdated, setWallUpdated] = useState(false); 
+  const [countLikes, setCountLikes] = useState(0);
+
   const [state, setState] = useState(false);
 
   useEffect(() => {
@@ -26,6 +24,7 @@ console.log(data)
   }, [token]);
 
   useEffect(() => {
+
     axios.post('http://localhost:1000/main', { token })
       .then(res => {
         setComments(res.data.comments);
@@ -34,67 +33,78 @@ console.log(data)
       .catch(error => {
         console.error('Ошибка при получении данных о пользователе:', error);
       });
-  }, [state]);
-
-  useEffect(() => {
-    setList({ ...list, postId: (new Date()).getTime().toString() }); // Convert to string
-    console.log(list);
-  }, [state]);
+  }, [state,wallUpdated]);
 
 
   function addList() {
     setState((prev) => !prev);
-    setList({ ...list, comment: values, id: data._id }); // Добавляем id в объект list
     setValues('');
-  
-    axios.post('http://localhost:1000/posts', list)
-      .then(result => console.log(result))
+    const id = data._id;
+    const formData = new FormData();
+    formData.append('id', id)
+    formData.append('comment', values)
+    console.log(image)
+    formData.append('image', image)
+    formData.append('postId',(new Date()).getTime().toString())
+    formData.append('likes', countLikes)
+   
+    axios.post('http://localhost:1000/posts', formData,{
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then(result =>  setWallUpdated(prev => !prev))
       .catch(error => console.error('Ошибка при отправке комментария:', error));
+
+  
   }
 
   function deletePost(postId) {
-    const id = data.id;
+    const id = data._id;
     axios.post('http://localhost:1000/deletepost', { postId, id })
       .then(res => {
         const updatedComments = comments.filter(item => item.postId !== postId);
         setComments(updatedComments);
       })
       .catch(err => console.error('Ошибка при удалении комментария:', err));
+   
   }
+
+
   
-  const onChange = (info) => {
-    if (info.file.status === 'done') {
-      console.log(info.file.response);
-      const photoUrl = info.file.response.image;
-      console.log('photoUrl', photoUrl);
-      const newComment = { ...list, photo: photoUrl };
-      setComments([...comments, newComment]);
-    }
-  };
-
-
-  const uploadProps = {
-    name: 'image',
-    action: 'http://localhost:1000/posts',
-    headers: {
-      id: data._id,
-
-    },
-    onChange: onChange,
-    customRequest: ({ file, onSuccess, onError }) => {
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('postId', list.postId);
-      formData.append('likes', list.likes);
-      formData.append('comment', list.comment);
-
-      axios.post('http://localhost:1000/posts', formData, {
-        headers: {
-          'id': data._id
-        }
+  function likeHandler(postId) {
+    const id = data._id;
+    axios.post('http://localhost:1000/likes', { postId, id })
+      .then(result => {
+        // Обновляем информацию о лайках в состоянии комментариев (comments)
+        const updatedComments = comments.map(item => {
+          if (item.postId === postId) {
+            return { ...item, liked: true, likes: item.likes + 1 };
+          }
+          return item;
+        });
+        setComments(updatedComments);
       })
-    },
-  };
+      .catch(err => console.error('Ошибка:', err));
+  }
+
+  function dislikeHandler(postId) {
+    const id = data._id;
+    axios.post('http://localhost:1000/likes', { postId, id })
+      .then(result => {
+        // Обновляем информацию о лайках в состоянии комментариев (comments)
+        const updatedComments = comments.map(item => {
+          if (item.postId === postId) {
+            return { ...item, liked: false, likes: item.likes - 1 };
+          }
+          return item;
+        });
+        setComments(updatedComments);
+      })
+      .catch(err => console.error('Ошибка:', err));
+  }
+
+
   return (
     <div className='block'>
       <div className='bold'>Моя лента</div>
@@ -102,30 +112,61 @@ console.log(data)
       <div className='container-newsline'>
    {/*    <img width='50px' className='img' height='50px' src={`http://localhost:1000/${data.image}`} alt="Изображение" /> */}
       <Input className='input-newsline' value={values} onChange={e=>setValues(e.target.value)} placeholder='Написать на стенке'></Input>
-      <Upload {...uploadProps} onClick={()=> setList({ ...list, id: data._id })}>
-       <img className='attach'  src='https://i.postimg.cc/8P9vK0TY/icons8-30.png'></img>
-      </Upload> 
+      
+       {/* <img className='attach'  src='https://i.postimg.cc/8P9vK0TY/icons8-30.png'></img> */}
+
      
+ 
+  <input type="file" name="photo" placeholder="Прикрепите файл" onChange={(e)=>setImage(e.target.files[0])}/>
+
    
       <Button className='btn-newsline' onClick={()=>addList()}>Отправить</Button>
       </div>
       <div className='content-newsline'>
               {comments && comments.map(item => (
-          <div className='block-newsline' key={item.postId}>
-            <div className='box-newsline'>
-              <div className='icon-newsline'>
-                
-                {item.photo && <img width='35px' className='img' height='35px' src={item.photo} alt="Изображение" />}
+          <div className='content-newsline-post' key={item.postId}>
+            <div className='posts'>
+                <div className='post-header'>
+                <div className='post-header-logo'> 
+                      {data.image && <img width='50px' height='50px' src={`http://localhost:1000/${data.image}`} alt="Изображение" />}  
+                </div>
+                      <div className='post-header-body'>
+                      
+                        <div className='post-body-name'>
+                                {data.name} {data.surname}  <span className='post-body-email'>@{(data.email).slice(0,8)}</span> 
+                        </div>
+                       
+                      
+                        <div className='post-time-edit'> 
+                            <div className='post-time-delete'>
+                          
+                            <div>{item.timestamp.slice(8,10)}.{item.timestamp.slice(5,7)}.20{item.timestamp.slice(2,4)}</div>
+                            <div>{+item.timestamp.slice(11,13)+3}:{item.timestamp.slice(14,16)}</div>
+
+                        </div>
+                          <img src="https://i.postimg.cc/c4jxWM0N/icons8-delete-24.png" className='post-body-delete-img' onClick={() => deletePost(item.postId)} alt="Удалить комментарий" /> 
+                          </div>
+                      </div>
+
+
+                </div>
+                <div className='post-body-comment'>{item.comment}</div>
+                <div className='post-body'>
+                {item.image ? <img  className='post-body-img' src={`http://localhost:1000/${item.image}`} alt="Изображение" /> :''}
+                </div>
+
+                <div className='post-footer'>
+                <div className='post-footer-comment'>коментировать</div>
+                <div>
+                     <img className='post-footer-like' onClick={()=>dislikeHandler()} src="https://i.postimg.cc/tTkNg3Vg/icons8-filled-heart-32-1.png" alt="" />
+                     {item.likes}
+                  </div>
+                </div>
+
               </div>
-              <div className='posts'>
-              <div className='comment-newsline'>{item.comment}</div>
-              <div className='comment-newsline'><img width='200px' height='200px' src={`http://localhost:1000/${item && item.image}`} alt="Изображение" /></div>
-              <div>time</div>
-              </div>
-            </div>
-            <div className='content-newsline-icons'>
-              <div className=''><img src="https://i.postimg.cc/c4jxWM0N/icons8-delete-24.png" onClick={() => deletePost(item.postId)} alt="Удалить комментарий" /></div>
-              <div className=''><img src="https://i.postimg.cc/PrQMYBwy/icons8-like-30.png" alt="" /></div>
+          
+              <div >
+    
             </div>
           </div>
         ))} 

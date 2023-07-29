@@ -42,7 +42,7 @@ function Friends() {
           <div className='body'>
             <div className='content-friends'>
               {data.map((user) => (
-                <div key={user.id}>
+                <div key={user.id} className='content-friends-item'>
                   {user.image ? (
                     <img
                       width='200px'
@@ -54,7 +54,8 @@ function Friends() {
                     />
                   ) : (
                     <img
-                      width='120px'
+                      width='200px'
+                      className='img'
                       src='https://i.postimg.cc/x1FJjZnH/icons8-person-80.png'
                       alt='person'
                       onClick={() => getPage(user)}

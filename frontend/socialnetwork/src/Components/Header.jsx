@@ -1,26 +1,16 @@
 import {useEffect, useState} from 'react'
-import {useNavigate} from 'react-router-dom';
 import axios from 'axios'
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import { setStatusAuth } from '../redux/mainReducer';
 
 function Header() {
     const token = localStorage.getItem('token');
-    const navigate = useNavigate();
     const dispatch = useDispatch()
-
     const [data,setData] = useState([])
  
     useEffect(()=>{
         axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data));
     },[])
-
-/* 
-    function exits (){
-    
-      navigate('/')
-      dispatch(getStatusAuth(false)) 
-      } */
 
   return (
     <div className='header'>

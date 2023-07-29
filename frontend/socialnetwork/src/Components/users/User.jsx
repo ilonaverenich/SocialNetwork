@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import Header from '../Header';
 import Menu from './Menu';
 import Comments from './Comments'
@@ -7,7 +7,7 @@ import Comments from './Comments'
 function User() {
 
  const userData = useSelector((store) => store.data.mainUser);
- console.log(userData)
+
   return (
     <div className='personal-page'>
         <Header/>

@@ -9,6 +9,7 @@ router.use('/', upload.single('img'), (req, res) => {
     const { email } = req.body;
     const img = req.file;
     const imagePath = img.filename;
+    console.log(imagePath)
   
     User.findOneAndUpdate(
       { email: email },

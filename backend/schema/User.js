@@ -2,7 +2,11 @@ const {Schema, model} = require ('mongoose');
 
 const CommentSchema = new Schema({
     postId: String,
+    name:String,
+    surname:String,
+    email:String,
     comment: String,
+    logo:String,
     likes: Number,
     image: {
         type: String,

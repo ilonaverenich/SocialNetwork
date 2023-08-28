@@ -230,6 +230,9 @@ td{
 }
 .btn-newsline{
     height: 40px;
+    background: rgb(53, 108, 247);
+    color: white;
+    font-size: 16px;
 }
 
 .file{

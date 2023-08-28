@@ -5,13 +5,13 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
 
 router.post('/', upload.single('image'), (req, res) => {
-    const { postId, likes, comment,id } = req.body;
+    const { postId, likes, comment,id, name,email,surname, icon} = req.body;
     const image = req.file;
-  
+  console.log(id,name,email,surname,icon)
     User.findOne({_id:id })
       .then((user) => {
         if (user) {
-          image !== undefined ? user.comments.push({ postId, likes, comment,image: image.filename}) : user.comments.push({ postId, likes, comment}); 
+          image !== undefined ? user.comments.push({ postId, likes, comment,image: image.filename,name,email,surname}) : user.comments.push({ postId, likes, comment, name,email,surname, logo:icon}); 
           return user.save(); 
         } else {
           throw new Error('User not found');

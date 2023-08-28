@@ -70,41 +70,7 @@ function Newsline() {
   }
 
 
-  
-  function likeHandler(postId) {
-    const id = data._id;
-    axios.post('http://localhost:1000/likes', { postId, id })
-      .then(result => {
-        // Обновляем информацию о лайках в состоянии комментариев (comments)
-        const updatedComments = comments.map(item => {
-          if (item.postId === postId) {
-            return { ...item, liked: true, likes: item.likes + 1 };
-          }
-          return item;
-        });
-        setComments(updatedComments);
-      })
-      .catch(err => console.error('Ошибка:', err));
-  }
-
-  function dislikeHandler(postId) {
-    const id = data._id;
-    axios.post('http://localhost:1000/likes', { postId, id })
-      .then(result => {
-        // Обновляем информацию о лайках в состоянии комментариев (comments)
-        const updatedComments = comments.map(item => {
-          if (item.postId === postId) {
-            return { ...item, liked: false, likes: item.likes - 1 };
-          }
-          return item;
-        });
-        setComments(updatedComments);
-      })
-      .catch(err => console.error('Ошибка:', err));
-  }
-
-
-  return (
+    return (
     <div className='block'>
       <div className='bold'>Моя лента</div>
         <hr></hr>
@@ -152,7 +118,7 @@ function Newsline() {
                 <div className='post-footer'>
                 <div className='post-footer-comment'>коментировать</div>
                   <div>
-                     <img className='post-footer-like' onClick={()=>dislikeHandler()} src="https://i.postimg.cc/tTkNg3Vg/icons8-filled-heart-32-1.png" alt="" />
+                     <img className='post-footer-like' src="https://i.postimg.cc/tTkNg3Vg/icons8-filled-heart-32-1.png" alt="" />
                      {item.likes}
                   </div>
                 </div>

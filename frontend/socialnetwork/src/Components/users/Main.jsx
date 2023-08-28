@@ -15,7 +15,7 @@ function Main() {
   const [status,setStatus] = useState(false);
   const [statusData,setStatusData] = useState('');
   const [photo,setPhoto] = useState('');
-  const contsInfo = useSelector((store) => store.data.userData);
+  const contsInfo = useSelector((store) => store.data.userDatas);
   const state = useSelector((store) => store.data.state);
   const statusAuth = useSelector((store) => store.data.statusAuth);
   const [sta,setSta] = useState(false)
@@ -29,28 +29,6 @@ function Main() {
     const currentDate = new Date();
     const yearsDiff = currentDate.getFullYear() - date.getFullYear();
     
-
-    useEffect(()=>{
-      const email = data.email;
-      if (photo) {
-        const formData = new FormData();
-        formData.append('img', photo);
-        formData.append('email', email);
-  
-        axios.post('http://localhost:1000/img', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        .then((res) => {
-          setData(res.data)
-          
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      }
-    },[state]) 
    
   function setStatusHandler(){
      setStatus(true)
@@ -59,9 +37,34 @@ function Main() {
   function editInfoHandler(){
     setSta(true)   
   }
- async function saveInfoHandler(){
+   function saveInfoHandler(){
   setSta(false)
-  await  axios.post('http://localhost:1000/editprofile',contsInfo).then(res=>setData(res.data))
+
+  console.log('contsInfo',contsInfo)
+  console.log('data',data)
+     
+  const formData = new FormData();
+ 
+  formData.append('email',  contsInfo.email )
+  formData.append('gender',  contsInfo.gender)
+  formData.append('cityOfResidence',  contsInfo.cityOfResidence)
+  formData.append('dateOfBirth', contsInfo.dateOfBirth) 
+  formData.append('maritalStatus', contsInfo.maritalStatus)
+  formData.append('placeOfWork', contsInfo.placeOfWork)
+  formData.append('interests', contsInfo.interests)
+  formData.append('photo', contsInfo.photo)
+
+
+  axios.post('http://localhost:1000/editprofile',formData,{
+     headers: {
+       'Content-Type': 'multipart/form-data'
+     }
+   
+  }).then(res=>setData(res.data))
+
+  
+/*   
+  await  axios.post('http://localhost:1000/editprofile',contsInfo).then(res=>setData(res.data)) */
 
   }
 
@@ -87,22 +90,22 @@ function Main() {
             <div className='body-img' >
              
             {data && data.image ? (
-              <img width='230px' height='230px' className='body-img-logo' src={`http://localhost:1000/${data && data.image}`} alt="Изображение" />
+              <img width='50%' height='100%' className='body-img-logo' src={`http://localhost:1000/${data && data.image}`} alt="Изображение" />
             ):<img width='120px'  src="https://i.postimg.cc/x1FJjZnH/icons8-person-80.png" alt="person" />}
             
             </div>
            
             <div className='body-name'>
            
-             <div className='name-person'> {data&& data.name}  {data&& data.surname}  {yearsDiff? yearsDiff:''}   {statusAuth?<span className='active'>online</span>:''} </div>
+             <div className='name-person'> {data.name}  {data.surname}  {yearsDiff? yearsDiff:''}   {statusAuth?<span className='active'>online</span>:''} </div>
              
              {!status ?
-             <div className='status' onClick={()=>setStatusHandler()}>{(data&& data.status) == "" ?'установите статус': data&& data.status}</div>: <Input onChange={(e)=>setStatusData(e.target.value)} value={statusData} className='input' onBlur={()=>saveHandler()}/>}</div>
+             <div className='status' onClick={()=>setStatusHandler()}>{(data.status) == "" ?'установите статус': data.status}</div>: <Input onChange={(e)=>setStatusData(e.target.value)} value={statusData} className='input' onBlur={()=>saveHandler()}/>}</div>
         
 
             </div>  
 
-                {sta? <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />:''}
+               {/*  {sta? <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />:''} */}
 
             <div className='edit-content'>
               <div className='bold block'>Контактная информация</div>
@@ -113,18 +116,18 @@ function Main() {
           {sta ? <TableMainPage data={data} email={data.email}/>:  <table className='table-main'>
       <tr className='tr-main'>
             <td>Ваш пол:</td>
-            <td>{data&&!data.gender ? <span className='status'>Заполните информацию</span> :data&& data.gender }</td>
+            <td>{data.gender =='' ? <span className='status'>Заполните информацию</span> : data.gender}</td>
         </tr>
         <tr className='tr-main'>
             <td>Город проживания:</td>
             <td> 
-              {data&&!data.cityOfResidence ? <span className='status'>Заполните информацию</span> :data&& data.cityOfResidence }
+              {data.cityOfResidence =='' ? <span className='status'>Заполните информацию</span> : data.cityOfResidence }
             </td>
         </tr>
         <tr className='tr-main'>
             <td>Дата рождения:</td>
             <td> 
-            {data&&!data.dateOfBirth ? <span className='status'>Заполните информацию</span> :data&& data.dateOfBirth }
+            {data.dateOfBirth =='' ? <span className='status'>Заполните информацию</span> :data.dateOfBirth }
             </td>
         </tr>
       
@@ -132,18 +135,18 @@ function Main() {
         <tr className='tr-main'>
             <td>Семейное положение:</td>
             <td> 
-            {data&&!data.maritalStatus ? <span className='status'>Заполните информацию</span> :data&& data.maritalStatus }
+            {data.maritalStatus =='' ? <span className='status'>Заполните информацию</span> : data.maritalStatus }
             </td>
         </tr>
         <tr className='tr-main'>
             <td>Место работы: </td>
             <td> 
-            {data&&!data.placeOfWork ? <span className='status'>Заполните информацию</span> :data&& data.placeOfWork }
+            {data.placeOfWork ==''? <span className='status'>Заполните информацию</span> :data.placeOfWork }
             </td>
         </tr>
         <tr className='tr-main'>
             <td>Интересы, хобби: </td>
-            <td>{data&&!data.interests ? <span className='status'>Заполните информацию</span> :data&& data.interests }</td>
+            <td>{data.interests=='' ? <span className='status'>Заполните информацию</span> : data.interests }</td>
 
         </tr>
     

@@ -7,33 +7,38 @@ import {setUserData} from '../../redux/mainReducer'
 
 
 function TableMainPage({email}) {
-  const [data,setDatas] = useState([])
+  const [contsInfo,setContsInfo] = useState([])
+
 
   const token = localStorage.getItem('token');
 
-  useEffect(()=>{
-    axios.post('http://localhost:1000/main',{token}).then(res=>setDatas(res.data));
-    },[]) 
+  useEffect(() => {
+    axios.post('http://localhost:1000/main', { token }).then((res) => {
 
-    console.log(data)
+      if (res.data) {
+        setContsInfo({
+          ...contsInfo,
+          email:email,
+          gender: res.data.gender || '', 
+          cityOfResidence: res.data.cityOfResidence || '',
+          dateOfBirth: res.data.dateOfBirth || '',
+          maritalStatus: res.data.maritalStatus || '',
+          placeOfWork: res.data.placeOfWork || '',
+          interests: res.data.interests || '',
+        });
+      }
+    });
+  }, []);
+
   const dispatch = useDispatch()
   const { Option } = Select;
   const RadioButton = Radio.Button;
   const RadioGroup = Radio.Group;
-  const [contsInfo, setContsInfo] = useState({
+ 
 
-    email: email,
-    gender: data.gender,
-    cityOfResidence: data.cityOfResidence,
-    dateOfBirth: data.dateOfBirth,
-    maritalStatus: data.maritalStatus,
-    placeOfWork:data.placeOfWork,
-    interests: data.interests,
-    photo: data.photo
-
-  })
   useEffect(()=>{
    dispatch(setUserData(contsInfo))
+   
   })
 
 
@@ -60,15 +65,19 @@ function TableMainPage({email}) {
   const handleInterestsChange = (e) => {
     setContsInfo({ ...contsInfo, interests: e.target.value });
   };
+  const handlePhotoChange = (e) => {
+    setContsInfo({ ...contsInfo, photo: e.target.files[0] });
+  };
  
   return ( 
     <div>
+     Изменить фото: <input type="file"  onChange={handlePhotoChange}  />
       <table className="edit-table">
       <tbody>
         <tr>
           <td>Выберите пол:</td>
           <td>
-            <RadioGroup onChange={handleGenderChange} value={data.gender}   >
+            <RadioGroup onChange={handleGenderChange} value={contsInfo.gender}   >
               <RadioButton value="мужчина">М</RadioButton>
               <RadioButton value="женщина">Ж</RadioButton>
             </RadioGroup>
@@ -77,19 +86,19 @@ function TableMainPage({email}) {
         <tr>
           <td>Город проживания: </td>
           <td>
-            <Input type="text" onChange={handleCityChange} defaultValue={data.cityOfResidence} placeholder={data.cityOfResidence} />
+            <Input type="text" onChange={handleCityChange } defaultValue={contsInfo.cityOfResidence} placeholder={contsInfo.cityOfResidence} />
           </td>
         </tr>
         <tr>
           <td>Дата рождения</td>
           <td>
-            <Input type="date" onChange={handleDateOfBirthChange} value = {data.dateOfBirth} />
+            <Input type="date" onChange={handleDateOfBirthChange} placeholder = {contsInfo.dateOfBirth} />
           </td>
         </tr>
         <tr>
           <td>Семейное положение:</td>
           <td>
-            <Select className='select' onChange={handleMaritalStatusChange} value={contsInfo.maritalStatus} defaultValue={contsInfo.maritalStatus}>
+            <Select className='select' onChange={handleMaritalStatusChange} placeholder={contsInfo.maritalStatus}>
               <Option value="Не замужем\Не женат">Не замужем (Не женат)</Option>
               <Option value="Замужем\Женат">Замужем (Женат)</Option>
               <Option value="Ищу друга\подругу">Ищу друга (подругу)</Option>
@@ -99,13 +108,13 @@ function TableMainPage({email}) {
         <tr>
           <td>Место работы: </td>
           <td>
-            <Input type="text" onChange={handlePlaceOfWorkChange} value={contsInfo.placeOfWork} placeholder={data.placeOfWork}  />
+            <Input type="text" onChange={handlePlaceOfWorkChange}  placeholder={contsInfo.placeOfWork}  />
           </td>
         </tr>
         <tr>
           <td>Интересы, хобби:</td>
           <td>
-            <Input type="text" onChange={handleInterestsChange} value={contsInfo.interests} placeholder={data.interests} />
+            <Input type="text" onChange={handleInterestsChange}placeholder={contsInfo.interests} />
           </td>
         </tr>
 

@@ -43,7 +43,6 @@ function Newsline() {
     const formData = new FormData();
     formData.append('id', id)
     formData.append('comment', values)
-    console.log(image)
     formData.append('image', image)
     formData.append('postId',(new Date()).getTime().toString())
     formData.append('likes', countLikes)
@@ -131,33 +130,28 @@ function Newsline() {
                       {data.image && <img width='50px' height='50px' src={`http://localhost:1000/${data.image}`} alt="Изображение" />}  
                 </div>
                       <div className='post-header-body'>
-                      
                         <div className='post-body-name'>
-                                {data.name} {data.surname}  <span className='post-body-email'>@{(data.email).slice(0,8)}</span> 
+                          {data.name} {data.surname}  <span className='post-body-email'>@{(data.email).slice(0,8)}</span> 
                         </div>
                        
-                      
                         <div className='post-time-edit'> 
                             <div className='post-time-delete'>
-                          
-                            <div>{item.timestamp.slice(8,10)}.{item.timestamp.slice(5,7)}.20{item.timestamp.slice(2,4)}</div>
-                            <div>{+item.timestamp.slice(11,13)+3}:{item.timestamp.slice(14,16)}</div>
-
-                        </div>
+                              <div>{item.timestamp.slice(8,10)}.{item.timestamp.slice(5,7)}.20{item.timestamp.slice(2,4)}</div>
+                              <div>{+item.timestamp.slice(11,13)+3}:{item.timestamp.slice(14,16)}</div>
+                            </div>
                           <img src="https://i.postimg.cc/c4jxWM0N/icons8-delete-24.png" className='post-body-delete-img' onClick={() => deletePost(item.postId)} alt="Удалить комментарий" /> 
-                          </div>
+                        </div>
                       </div>
-
 
                 </div>
                 <div className='post-body-comment'>{item.comment}</div>
-                <div className='post-body'>
-                {item.image ? <img  className='post-body-img' src={`http://localhost:1000/${item.image}`} alt="Изображение" /> :''}
-                </div>
+                  <div className='post-body'>
+                  {item.image ? <img  className='post-body-img' src={`http://localhost:1000/${item.image}`} alt="Изображение" /> :''}
+                  </div>
 
                 <div className='post-footer'>
                 <div className='post-footer-comment'>коментировать</div>
-                <div>
+                  <div>
                      <img className='post-footer-like' onClick={()=>dislikeHandler()} src="https://i.postimg.cc/tTkNg3Vg/icons8-filled-heart-32-1.png" alt="" />
                      {item.likes}
                   </div>

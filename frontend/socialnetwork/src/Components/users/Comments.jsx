@@ -43,8 +43,8 @@ function Comments() {
                 </div>
 
                 <div className='post-footer'>
-                <div className='post-footer-comment'>комментировать</div>
-                <div><img className='post-footer-like' src="https://i.postimg.cc/PrQMYBwy/icons8-like-30.png" alt="" /></div>
+               {/*  <div className='post-footer-comment'>Лайк!</div> */}
+                <div></div>
                 </div>
 
               </div>

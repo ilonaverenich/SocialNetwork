@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import Menu from '../users/Menu';
 import Header from '../Header';
 import axios from 'axios';
+import Chat from './Chat';
 
 function MessagesPage() {
     const token = localStorage.getItem('token');
@@ -22,7 +23,7 @@ function MessagesPage() {
         <div className='container'>
           <Menu />
           <div className='body'>
-            У вас нет сообщений
+           <Chat/>
           </div>
         </div>
       </div>}

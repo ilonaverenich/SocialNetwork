@@ -8,8 +8,8 @@ function Comments() {
     const data = useSelector((store) => store.data.mainUser);
     const [datas, setDatas] = useState({});
     const [user, setUser] = useState(data.comments);
-
     const [value,setValue] = useState('')
+    
     useEffect(() => {
       axios.post('http://localhost:1000/main', { token })
         .then(res => {

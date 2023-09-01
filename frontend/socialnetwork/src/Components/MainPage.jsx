@@ -3,6 +3,8 @@ import {useNavigate} from 'react-router-dom';
 
 
 function  MainPage() {
+
+
     const navigate = useNavigate()
  
   return (

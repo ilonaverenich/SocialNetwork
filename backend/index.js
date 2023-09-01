@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const socketIo = require('socket.io')
 const http = require('http')
 const server = http.createServer(app)
+const User = require('./schema/User')
 
 app.use(cors())
 app.use(express.json())
@@ -72,7 +73,9 @@ mongoose.connect('mongodb+srv://ilonaverenich:CiCvsYz7KuoJKMan@cluster0.gkclzup.
   app.use('/img', require('./routes/img.routes'))
   app.use('/editprofile', require('./routes/editprofile.routes'))
   
-
+  app.use('/news', (req,res) => {
+    User.find().then(result=>res.send(result))
+  })
 
 
   server.listen(1000,()=>console.log('server has been started'))

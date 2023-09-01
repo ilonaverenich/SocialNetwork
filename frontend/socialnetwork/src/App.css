@@ -267,7 +267,7 @@ td{
     background: #fafafa;}
    
 .content-newsline{
-    width: 70%;
+    width: 90%;
     margin: 0 auto;
 }
   
@@ -282,6 +282,7 @@ td{
   }
   .post-header-logo img{
     border-radius: 30px;
+   
   }
   .post-header-body{ 
     padding: 20px;
@@ -319,9 +320,11 @@ td{
     justify-content: center;
     padding: 5px 90px;
     margin: 0 auto;
+   
   }
   .post-body img{
     border-radius: 5px;
+    width: 30%;
     
   }
   .post-body-img {
@@ -415,4 +418,82 @@ td{
 .name{
     font-size: 14px;
     color: #8e8e8e;
+}
+.game-body{
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+}
+.game-body-img{
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30%; /* Ширина области */
+    height: 100%; /* Высота области */
+    margin: 0; /* Обнуляем отступы */
+    margin: 20px;
+}
+.game-body-img img{
+    width: 100%; /* Ширина изображений */
+    height: 100%; /* Высота изображении */
+    object-fit: cover; 
+}
+.post-news{
+    border: 1px solid  rgb(188, 188, 188);
+    display: flex;
+    flex-direction: column;
+    font-size: 22px;
+  
+    margin: 20px 0;
+}
+.post-news-item{
+
+    background: #f5f4f4;
+
+    display: flex;
+    align-items: center;
+
+    padding: 10px 0;
+  
+}
+
+.post-news-item-name{
+    padding: 0 5px;
+    font-weight: bold;
+}
+.posts-news-item{
+
+   height: 5vh;
+   display: flex;
+   align-items: center;
+   padding: 20px 30px;
+   justify-content: center;
+
+
+}
+.posts-news{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    align-items: center;
+}
+.news-logo{
+    padding: 10px;
+    border-radius: 50%;
+}
+i{
+    padding-left: 20px;
+}
+.news-comment{
+    padding-left: 20px;
+    
+}
+.photo{
+    text-align: center;
 }

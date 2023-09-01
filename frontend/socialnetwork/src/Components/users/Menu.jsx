@@ -8,6 +8,9 @@ function Menu() {
                 <div onClick={()=>navigate('/')}>Моя страница</div>
                 <div onClick={()=>navigate('/friends')}>Друзья</div>
                 <div onClick={()=>navigate('/message')}>Сообщения</div>
+                <div onClick={()=>navigate('/news')}>Новости</div>
+                <div onClick={()=>navigate('/game')}>Развлечения</div>
+                
             </div>
     </div>
   )

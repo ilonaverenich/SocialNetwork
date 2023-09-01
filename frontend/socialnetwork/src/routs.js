@@ -5,6 +5,9 @@ import Main from './Components/users/Main';
 import Friends from './Components/users/Friends';
 import User from './Components/users/User';
 import MessagesPage from './Components/message/MessagesPage'
+import Game from "./Components/game/Game";
+import NewsPage from "./Components/news/NewsPage";
+ 
 
 
 import { Routes, Route } from "react-router-dom";
@@ -17,6 +20,8 @@ import { Routes, Route } from "react-router-dom";
       <Route path='/friends' element = {<Friends/>}/>
       <Route path='/user' element = {<User/>}></Route>
       <Route path="/message" element={<MessagesPage/>}> </Route>
+      <Route path="/game" element={<Game/>}> </Route>
+      <Route path="/news" element={<NewsPage/>}> </Route>
     </Routes>
   )
     }

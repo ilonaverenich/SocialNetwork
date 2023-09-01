@@ -465,6 +465,7 @@ td{
 .post-news-item-name{
     padding: 0 5px;
     font-weight: bold;
+
 }
 .posts-news-item{
 
@@ -496,4 +497,15 @@ i{
 }
 .photo{
     text-align: center;
+}
+.posts-title{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.post{
+    padding: 10px;
+    font-size: 14px;
 }

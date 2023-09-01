@@ -22,17 +22,27 @@ function NewsPage() {
               
               <div className="post-news-item"><img className="news-logo" width='40px' height='40px' src={`http://localhost:1000/${user.image}`}></img>
           
-            {el.name ? <div> На странице <span className="post-news-item-name"> { user.name} { user.surname} </span>написали</div>:<div><span className="post-news-item-name"> { user.name} { user.surname}</span> разместил(-а) новую запись</div>}
+            {el.name ? <div className="posts-title"> <div>На странице <span className="post-news-item-name"> { user.name} { user.surname} </span>написали </div>
+             <div className='post'>
+                              <div>{el.timestamp.slice(8,10)}.{el.timestamp.slice(5,7)}.20{el.timestamp.slice(2,4)}</div>
+                              <div>{+el.timestamp.slice(11,13)+3}:{el.timestamp.slice(14,16)}</div>
+                            </div>
+                          </div>
+                            
+                            :<div className="posts-title"> <div><span className="post-news-item-name"> { user.name} { user.surname} </span> разместил(-а) новую запись  </div><div className='post'>
+                            <div>{el.timestamp.slice(8,10)}.{el.timestamp.slice(5,7)}.20{el.timestamp.slice(2,4)}</div>
+                            <div>{+el.timestamp.slice(11,13)+3}:{el.timestamp.slice(14,16)}</div>
+                          </div> </div>}
             
             </div>
              <div className="post-news-item-posts">  {el.name? <div className="posts-news-item">
              <img className="news-logo" width='40px' height='40px' src={`http://localhost:1000/${el.logo}`}></img> 
-             <b>{el.name} {el.surname}</b> <i>{el.comment}</i>
+             <b> {el.name} {el.surname}</b> <i>{el.comment}</i>
              </div>
              : 
              <div className="posts-news">
-             <p className="news-comment"> 
-             {el.comment} 
+              <p className="news-comment"> 
+                {el.comment} 
              </p>
               {el.image  ? <img className="photo" width='35%' height='35%' src={`http://localhost:1000/${el.image}`}>
               </img>:''}

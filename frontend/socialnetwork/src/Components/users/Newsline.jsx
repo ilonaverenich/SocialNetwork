@@ -75,13 +75,9 @@ function Newsline() {
       <div className='bold'>Моя лента</div>
         <hr></hr>
       <div className='container-newsline'>
-   {/*    <img width='50px' className='img' height='50px' src={`http://localhost:1000/${data.image}`} alt="Изображение" /> */}
       <Input className='input-newsline' value={values} onChange={e=>setValues(e.target.value)} placeholder='Написать на стенке'></Input>
       
-       {/* <img className='attach'  src='https://i.postimg.cc/8P9vK0TY/icons8-30.png'></img> */}
 
-     
- 
   <input type="file" name="photo" placeholder="Прикрепите файл" onChange={(e)=>setImage(e.target.files[0])}/>
 
    
@@ -101,9 +97,9 @@ function Newsline() {
                         </div>
                        
                         <div className='post-time-edit'> 
-                            <div className='post-time-delete'>
+                            
                               <div>{item.timestamp.slice(8,10)}.{item.timestamp.slice(5,7)}.20{item.timestamp.slice(2,4)}</div>
-                              <div>{+item.timestamp.slice(11,13)+3}:{item.timestamp.slice(14,16)}</div>
+                              <div>{+item.timestamp.slice(11,13)+3}:{item.timestamp.slice(14,16)}
                             </div>
                           <img src="https://i.postimg.cc/c4jxWM0N/icons8-delete-24.png" className='post-body-delete-img' onClick={() => deletePost(item.postId)} alt="Удалить комментарий" /> 
                         </div>

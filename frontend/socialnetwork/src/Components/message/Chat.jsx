@@ -1,95 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import {Input,Button} from 'antd'
-import io from 'socket.io-client';
+import socketIO from 'socket.io-client';
+import {useSelector} from 'react-redux';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const socket = io.connect('http://localhost:1000');
+
 
 function Chat() {
+  const socket = socketIO.connect('http://localhost:1000');
   const token = localStorage.getItem('token');
-  const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]);
+  
   const [email, setEmail] = useState('');
   const [datas, setDatas] = useState([]);
-  const [selectedFriend, setSelectedFriend] = useState(null);
 
+
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState('');
+  const [message, setMessage] = useState('')
+  const [messages, setMessages] = useState([])
 
   useEffect(() => {
-    setTimeout(()=>{axios.post('http://localhost:1000/main', { token }).then((res) => setEmail(res.data.email))},500)
+    axios.post('http://localhost:1000/main', { token }).then((res) => setDatas(res.data))
+    setEmail(datas.email)
   }, []);
 
-  useEffect(() => {
-    console.log(email)
+  useEffect(()=>{
+    socket.on('response',(data)=>setMessages([...messages, data]))
+    console.log(messages)
+  },[socket])
+
+/*   useEffect(() => {
     if (email) {
       axios.post('http://localhost:1000/friends', { email }).then((res) => {
         setDatas(res.data);
+        console.log(datas)
       });
     }
-  }, [email]); 
+  }, []);  */
  
-  const sendMessage = () => {
-    if (!selectedFriend) {
-      socket.emit('send-message', { text: message });
-    } else {
-      socket.emit('private-message', {
-        senderEmail: email,
-        recipientEmail: selectedFriend.email,
-        text: message,
-      });
-    }
-    console.log(messages)
-    setMessage('');
-  };
+  function sendSocketMessage(){
   
-  useEffect(() => {
-    socket.on('receive-message', (data) => {
-      console.log('Сервер получил сообщение:', data);
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-  
-    socket.on('receive-private-message', (data) => {
-      console.log('Сервер получил приватное сообщение:', data);
-      setMessages((prevMessages) => [...prevMessages, data]);
-    });
-  }, []);
-
-  const selectFriend = (friend) => {
-    console.log(friend)
-    setSelectedFriend(friend);
-    setMessages([]); 
-  };
-
+    socket.emit('message',{
+      name: datas.name,
+      message,
+      socketId: socket.id
+    }) 
+     setMessage('')
+  }
+console.log(datas.name)
 
   return (
     <div>
     <div className='chat'>
       <div className='chat-friends'>
-        {datas &&
-          datas.map((friend) => (
-            <p key={friend.email} onClick={() => selectFriend(friend)} className='chat-user'>
-              {friend.name} {friend.surname}
-            </p>
-          ))}
+      
       </div>
       <div className='chat-message'>
       <div className='block-message'>
-          <span className='name'>{selectedFriend ? selectedFriend.name : 'Общий чат'}</span>
-          {messages.map((message, index) => (
-            <p className='mess' key={index}>
-              <span className='name'>{message.senderEmail}</span> {message.text}
-            </p>
-          ))}
+         {/* {messages.map(el=><div>{el.name} {el.message}</div>)} */}
+
+
+         {messages.map(el=><div>{el.name == datas.name ? (<div className='my-message message'> <b>{el.name}: </b> <span className='send-mess'> {el.message}</span></div>) : (<div className='friend-message message'><b>{el.name}: </b><span className='send-mess'> {el.message}</span></div>)} 
+       
+         </div>)}
+
+        
         </div>
         <div className='message-send'>
-          <Input
+         <span className='message-name'>{datas.name}</span>: <Input
             type='text'
             className='chat-send-input'
+            onChange={(e)=>setMessage(e.target.value)}
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
           />
-          <Button className='chat-send-btn' onClick={sendMessage}>
+          <Button className='chat-send-btn' onClick={sendSocketMessage}>
             Отправить
           </Button>
+
+       
         </div>
       </div>
     </div>

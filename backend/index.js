@@ -17,49 +17,23 @@ const io = socketIo(server,{
     origin: 'http://localhost:3000'
   }
 })
-const connectedUsers = {}
 
-io.on('connection',(socket)=>{
-  console.log('Пользователь подключился');
-
-  console.log('client connected: ',socket.id)
-  
-  socket.on('auth', (userId) => {
-    connectedUsers[userId] = socket;
-  });
-  
-  socket.on('disconnect',(reason)=>{
-    console.log(reason)
-  })
-
-  socket.on('send-message', (data) => {
-    console.log('Получено сообщение:', data);
-    // Ваша логика обработки сообщения здесь
-    io.emit('receive-message', data); // Рассылаем сообщение всем клиентам
-  });
-  socket.on('private-message', ({ senderEmail, recipientEmail, text }) => {
-    const recipientSocket = connectedUsers[recipientEmail];
-    if (recipientSocket) {
-      recipientSocket.emit('receive-private-message', {
-        senderEmail,
-        text,
-      });
-    }
-  });
-})
 
 
 mongoose.connect('mongodb+srv://ilonaverenich:CiCvsYz7KuoJKMan@cluster0.gkclzup.mongodb.net/MERN',{
     useNewUrlParser: true,
 }).then(res=> console.log('База Данных подключена')).catch(err=>console.log('возникла ошибка к подключении к БД'))
 
+io.on('connection', (socket) => {
+  console.log(`⚡: ${socket.id} user just connected!`);
+  socket.on('disconnect', () => {
+    console.log('🔥: A user disconnected');
+  });
 
 
 
-
-
-
-
+  socket.on('message',(data)=>  io.emit('response',data))
+});
 
 
   app.use('/friends', require('./routes/friends.routes'))

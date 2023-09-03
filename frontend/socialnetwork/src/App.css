@@ -9,7 +9,6 @@
 
 .input{
     width: 250px;
-
 }
 .btn-register{
     margin-top: 20px;
@@ -47,7 +46,6 @@
     width: 280px;
     justify-content: space-between;
     align-items: center;
-  
 }
 .container{
     display: flex;
@@ -68,7 +66,6 @@
     display: flex;
     flex-direction: column;
     font-size: 22px;
-
 }
 .menu-link{
     margin: 25px 15%;
@@ -98,9 +95,7 @@
 }
 .body-content{
     display: flex;
-
     width: 100%;
- 
     padding: 30px;
     margin-bottom: 20px;
     margin: 0 auto;
@@ -115,7 +110,6 @@
 }
 .edit{
     cursor: pointer;
-    
 }
 .edit-table{
    
@@ -133,7 +127,6 @@
     width: 70%;
     margin: 0 auto;
     font-size: 17px;
-   
 }
 
 .contact-info{
@@ -168,8 +161,7 @@ td{
 }
 .img{
     border-radius: 10px;
-    cursor: pointer;
-    
+    cursor: pointer; 
 }
 
 .input{
@@ -184,11 +176,9 @@ td{
     text-align: center;
 }
 .block{
-
     margin: 0auto;
 }
 .content-friends{
-
     margin: 0 auto;
     display: grid;
     align-items: center;
@@ -245,7 +235,6 @@ td{
     height:100px;
   }
   .load hr{border:0;margin:0;width:40%;height:40%;position:absolute;border-radius:50%;animation:spin 2s ease infinite}
-  
   .load :first-child{background:#19A68C;animation-delay:-1.5s}
   .load :nth-child(2){background:#F63D3A;animation-delay:-1s}
   .load :nth-child(3){background:#FDA543;animation-delay:-0.5s}
@@ -286,7 +275,6 @@ td{
   }
   .post-header-body{ 
     padding: 20px;
-   
     width: 60vw;
     display: flex;
     align-items: center;
@@ -303,7 +291,6 @@ td{
   }
   .post-time-delete{
     display: flex;
-
     flex-direction: column;
     padding:  0 20px;
     justify-content: center;
@@ -320,21 +307,17 @@ td{
     justify-content: center;
     padding: 5px 90px;
     margin: 0 auto;
-   
   }
   .post-body img{
     border-radius: 5px;
     width: 30%;
-    
   }
   .post-body-img {
     width: 50%;
     margin: 20px;
-    
   }
   .post-body-delete-img{
     cursor: pointer;
-  
     padding: 6px;
     background: rgb(235, 235, 235);
   }
@@ -367,7 +350,6 @@ td{
     display: flex;
     width: 100%;
     height: 80vh;
-    
 }
 .chat-friends{
     width: 30%;
@@ -385,7 +367,6 @@ td{
 .block-message{
     font-size: 20px;
     height: 60vh;
-
     overflow-y:scroll;
 }
 .mess{ 
@@ -398,35 +379,43 @@ td{
 }
 .chat-user{
     cursor: pointer;
-
 }
 .chat-send-input{
-    width: 70%;
-    margin-top: 20px;
+    width: 50%;
+    margin: 0 15px;
     font-size: 20px;
 }
 .chat-send-btn{
     height: 40px;
     margin-left: 10px;
     font-size: 20px;
-    margin-top: 20px;
+    background: rgb(254, 243, 39);
+
+}
+.message-name{
+    font-size: 24px;
+    font-weight: bold;
 }
 .message-send{
+    margin-top: 20px;
     display: flex;
     justify-content: center;
+    align-items: center;
+
+}
+.send-mess{
+    padding-left: 20px;
 }
 .name{
     font-size: 14px;
     color: #8e8e8e;
 }
 .game-body{
-  
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 20px;
-
 }
 .game-body-img{
 
@@ -448,34 +437,25 @@ td{
     display: flex;
     flex-direction: column;
     font-size: 22px;
-  
     margin: 20px 0;
 }
 .post-news-item{
-
     background: #f5f4f4;
-
     display: flex;
     align-items: center;
-
     padding: 10px 0;
-  
 }
 
 .post-news-item-name{
     padding: 0 5px;
     font-weight: bold;
-
 }
 .posts-news-item{
-
    height: 5vh;
    display: flex;
    align-items: center;
    padding: 20px 30px;
    justify-content: center;
-
-
 }
 .posts-news{
     display: flex;
@@ -508,4 +488,17 @@ i{
 .post{
     padding: 10px;
     font-size: 14px;
+}
+.message{
+    padding: 15px;
+    font-size: 20px;
+    border: 1px solid rgb(222, 222, 222);
+    margin: 5px 0px;
+    border-radius: 3px;
+}
+.my-message{
+    background: #f3fff0;
+}
+.friend-message{
+    background: #fffbf3;
 }

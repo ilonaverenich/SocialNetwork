@@ -3,12 +3,13 @@ import { createReducer, createAction } from '@reduxjs/toolkit';
 const initialValue = {
   statusAuth: false,
   userDatas:[],
+  isVisibleModal: 'false',
   state: false,
   mainUser:[],
   user :{
     "token":'',
     "status":'',
-    "stateEdit":false
+    "stateEdit":false,
   }
 };
 
@@ -18,7 +19,7 @@ export const getStatus = createAction('GET_STATUS_USER');
 export const setUserData = createAction('SET_USER_DATA');
 export const setStateEdit = createAction('SET_STATE_EDIT');
 export const setState = createAction('SET_STATE');
-
+export const setVisibleModal = createAction('SET_VISIBLE_MODAL');
 export const getMainUser = createAction('GET_MAIN_USER');
 
 const reducer = createReducer(initialValue, (builder) => {
@@ -28,6 +29,9 @@ const reducer = createReducer(initialValue, (builder) => {
     })
     .addCase(getUser, (state, action) => {
       state.user.token = action.payload;
+    }) 
+    .addCase(setVisibleModal, (state, action) => {
+      state.isVisibleModal = action.payload;
     })
     .addCase(setUserData, (state, action) => {
       state.userDatas = action.payload;
@@ -40,7 +44,9 @@ const reducer = createReducer(initialValue, (builder) => {
     })
     .addCase(getMainUser, (state, action) => {
       state.mainUser = action.payload;
-    });
+    })
+   
+    
 });
 
 export default reducer;

@@ -17,7 +17,8 @@ router.use('/',(req,res)=>{
         email:email,
         password:password,
         status:"",
-        photo:""
+        photo:"",
+        active:""
 
     }).then((result)=>{
         const userId = result.id; 

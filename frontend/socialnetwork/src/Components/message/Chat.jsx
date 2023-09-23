@@ -1,88 +1,148 @@
 import React, { useState, useEffect } from 'react';
-import {Input,Button} from 'antd'
-import socketIO from 'socket.io-client';
-import {useSelector} from 'react-redux';
+import { Input, Button } from 'antd';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-
-
-function Chat() {
-  const socket = socketIO.connect('http://localhost:1000');
+function Chat({ socket }) {
   const token = localStorage.getItem('token');
-  
+
   const [email, setEmail] = useState('');
-  const [datas, setDatas] = useState([]);
-
-
-  const navigate = useNavigate();
-  const [userName, setUserName] = useState('');
-  const [message, setMessage] = useState('')
-  const [messages, setMessages] = useState([])
+  const [datas, setDatas] = useState({});
+  const [friends, setFriends] = useState([]);
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [currentChatUser, setCurrentChatUser] = useState(null);
+  const [currentRoomMessages, setCurrentRoomMessages] = useState([]);
 
   useEffect(() => {
-    axios.post('http://localhost:1000/main', { token }).then((res) => setDatas(res.data))
-    setEmail(datas.email)
-  }, []);
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.post('http://localhost:1000/main', { token });
+        setDatas(response.data);
+        setEmail(response.data.email);
+      } catch (error) {
+        console.error('Ошибка при загрузке данных пользователя:', error);
+      }
+    };
 
-  useEffect(()=>{
-    socket.on('response',(data)=>setMessages([...messages, data]))
-    console.log(messages)
-  },[socket])
+    fetchUserData();
+  }, [token]);
 
-/*   useEffect(() => {
-    if (email) {
-      axios.post('http://localhost:1000/friends', { email }).then((res) => {
-        setDatas(res.data);
-        console.log(datas)
-      });
-    }
-  }, []);  */
- 
-  function sendSocketMessage(){
-  
-    socket.emit('message',{
-      name: datas.name,
-      message,
-      socketId: socket.id
-    }) 
-     setMessage('')
+useEffect(() => {
+  socket.on('privateMessage', (data) => {
+
+    setMessages((prevMessages) => [...prevMessages, data]);
+    setCurrentRoomMessages((prevMessages) => [...prevMessages, data]);
+  });
+
+  socket.on('roomJoined', (message) => {
+    console.log(message);
+  });
+}, [socket]);
+
+  useEffect(() => {
+    const fetchFriends = async () => {
+      try {
+        const response = await axios.post('http://localhost:1000/friends', { email });
+        setFriends(response.data);
+      } catch (error) {
+        console.error('Ошибка при загрузке списка друзей:', error);
+      }
+    };
+
+    fetchFriends();
+  }, [email]);
+
+
+  function createRoomName(userId1, userId2) {
+    return `room_${userId1}_${userId2}`;
   }
-console.log(datas.name)
+
+  function sendPrivateMessage(user) {
+    setCurrentChatUser(user);
+    const roomName = createRoomName(datas._id, user._id);
+    socket.emit('joinRoom', roomName);
+
+    setCurrentRoomMessages([]);
+  }
+  function sendSocketMessage() {
+    if (message.trim() !== '' && currentChatUser) {
+      const roomName = createRoomName(datas._id, currentChatUser._id);
+      const newMessage = {
+        sender: datas._id,
+        recipient: currentChatUser._id, // Добавляем айди получателя
+        message,
+        senderName: datas.name, // Добавляем имя отправителя
+        recipientName: currentChatUser.name, // Добавляем имя получателя
+      }; 
+      socket.emit('privateMessage', { recipient: currentChatUser._id, message, roomName });
+      setMessage('');
+      setCurrentRoomMessages((prevMessages) => [...prevMessages, newMessage]); 
+    }
+  }
+   
+  function createRoomName(userId1, userId2) {
+    const sortedUserIds = [userId1, userId2].sort();
+    return `room_${sortedUserIds[0]}_${sortedUserIds[1]}`;
+  }
+ 
 
   return (
     <div>
-    <div className='chat'>
-      <div className='chat-friends'>
-      
-      </div>
-      <div className='chat-message'>
-      <div className='block-message'>
-         {/* {messages.map(el=><div>{el.name} {el.message}</div>)} */}
-
-
-         {messages.map(el=><div>{el.name == datas.name ? (<div className='my-message message'> <b>{el.name}: </b> <span className='send-mess'> {el.message}</span></div>) : (<div className='friend-message message'><b>{el.name}: </b><span className='send-mess'> {el.message}</span></div>)} 
-       
-         </div>)}
-
+      <div className='chat'>
+        <div className='chat-friends'>
+        {console.log(friends)} 
         
+          {friends.map((user) => (
+            <div
+              key={user._id}
+              className={`chat-friends-item ${currentChatUser && currentChatUser._id === user._id ? 'active' : ''}`}
+              onClick={() => sendPrivateMessage(user)}
+            >
+              {user.name} {user.surname}
+            </div>
+          ))}
         </div>
-        <div className='message-send'>
-         <span className='message-name'>{datas.name}</span>: <Input
-            type='text'
-            className='chat-send-input'
-            onChange={(e)=>setMessage(e.target.value)}
-            value={message}
-          />
-          <Button className='chat-send-btn' onClick={sendSocketMessage}>
-            Отправить
-          </Button>
+        <div className='chat-message'>
+          <div className='block-message'>
+          {console.log(currentRoomMessages)}
+          {currentRoomMessages.map((el, index) => (
+  <div
+    key={index}
+    className={`message ${el.sender === datas._id ? 'my-message' : 'friend-message'}`}
+  >
+    <b>{el.senderName }:</b>
+    <p>{console.log(el.recipient,friends)}</p>
+    {/* {friends.map(item=><div>{item._id == el.recipient?'dd':'dddd'}</div>)} */}
+   
+    <span className='send-mess'>{el.message}</span>
+  </div>
+))}
 
-       
+
+
+
+
+
+
+          </div>
+          {currentChatUser && (
+            <div className='message-send'>
+              <span className='message-name'>{datas.name}</span>: {' '}
+              <Input
+                type='text'
+                className='chat-send-input'
+                onChange={(e) => setMessage(e.target.value)}
+                value={message}
+              />
+              <Button className='chat-send-btn' onClick={sendSocketMessage}>Отправить
+                </Button>
+               
+
+            </div>
+          )}
         </div>
       </div>
     </div>
-  </div>
   );
 }
 

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch} from 'react-redux';
+import { getMainUser } from '../../redux/mainReducer';
 import Menu from './Menu';
 import Header from '../Header';
 import axios from 'axios';
-import { getMainUser } from '../../redux/mainReducer';
 
 
 function Friends() {
@@ -25,9 +25,9 @@ function Friends() {
       });
     }
   }, [email]); 
+  
 
   function getPage(user) {
-    console.log(user);
     dispatch(getMainUser(user));
     navigate('/user');
   }
@@ -44,6 +44,7 @@ function Friends() {
               {data.map((user) => (
                 <div key={user.id} className='content-friends-item'>
                   {user.image ? (
+                   <div>
                     <img
                       width='200px'
                       className='img'
@@ -51,7 +52,7 @@ function Friends() {
                       src={`http://localhost:1000/${user.image}`}
                       alt='Изображение'
                       onClick={() => getPage(user)}
-                    />
+                    /> </div>
                   ) : (
                     <img
                       width='200px'
@@ -62,7 +63,9 @@ function Friends() {
                     />
                   )}
                   <div className='user'>
-                    {user.name} {user.surname}
+                    
+                    <div className='name-person'>{user.name} {user.surname} {user.active?<span className='active-status online'></span>:<span className=' active-status offline'></span>}</div>
+               
                   </div>
                 </div>
               ))}

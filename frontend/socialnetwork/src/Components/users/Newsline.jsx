@@ -98,9 +98,16 @@ function Newsline() {
                        
                         <div className='post-time-edit'> 
                             
-                              <div>{item.timestamp.slice(8,10)}.{item.timestamp.slice(5,7)}.20{item.timestamp.slice(2,4)}</div>
-                              <div>{+item.timestamp.slice(11,13)+3}:{item.timestamp.slice(14,16)}
-                            </div>
+                           
+                 
+                        <div className='post-time-delete'>
+                          
+                          <div>{item.timestamp.slice(8,10)}.{item.timestamp.slice(5,7)}.20{item.timestamp.slice(2,4)}</div>
+                          <div>{item.timestamp.slice(11,16)}</div>
+
+            
+                        
+                          </div>
                           <img src="https://i.postimg.cc/c4jxWM0N/icons8-delete-24.png" className='post-body-delete-img' onClick={() => deletePost(item.postId)} alt="Удалить комментарий" /> 
                         </div>
                       </div>
@@ -112,11 +119,11 @@ function Newsline() {
                   </div>
 
                 <div className='post-footer'>
-                <div className='post-footer-comment'>коментировать</div>
-                  <div>
+           {/*      <div className='post-footer-comment'>коментировать</div> */}
+               {/*    <div>
                      <img className='post-footer-like' src="https://i.postimg.cc/tTkNg3Vg/icons8-filled-heart-32-1.png" alt="" />
                      {item.likes}
-                  </div>
+                  </div> */}
                 </div>
 
               </div>

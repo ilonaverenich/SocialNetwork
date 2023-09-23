@@ -5,8 +5,10 @@ import Menu from '../users/Menu';
 import Header from '../Header';
 import axios from 'axios';
 import Chat from './Chat';
+import socketIO from 'socket.io-client';
 
 function MessagesPage() {
+    const socket = socketIO.connect('http://localhost:1000');
     const token = localStorage.getItem('token');
     const [data, setData] = useState([]);
 
@@ -23,7 +25,7 @@ function MessagesPage() {
         <div className='container'>
           <Menu />
           <div className='body'>
-           <Chat/>
+           <Chat socket={socket}/>
           </div>
         </div>
       </div>}

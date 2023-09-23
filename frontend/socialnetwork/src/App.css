@@ -145,6 +145,9 @@ td{
     padding: 0 20px;
     font-size: 24px;
     font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .status {
     color: rgb(151, 151, 151);
@@ -273,6 +276,21 @@ td{
     border-radius: 30px;
    
   }
+  .post-header-logo-img{
+    position: relative;
+  }
+  .post-header-logo-active{
+   
+    position: absolute;
+    left: 25px;
+    bottom: 5px;
+    display: block;
+    width: 13px; 
+    height: 13px;
+    border-radius: 50%;
+    margin-left: 10px;   
+  }
+
   .post-header-body{ 
     padding: 20px;
     width: 60vw;
@@ -354,10 +372,20 @@ td{
 .chat-friends{
     width: 30%;
     font-size: 20px;
-    background: #c1d3d0;
+    background: #dcdcdc;
     display: flex;
     flex-direction: column;
     padding: 0 20px;
+}
+.chat-friends-item{
+
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid grey;
+    box-shadow: 1px 1px 4px  rgb(255, 255, 255);
+}
+.chat-friends-item:hover{
+        background: rgb(245, 203, 179);
 }
 .chat-message{
     width: 70%;
@@ -502,3 +530,22 @@ i{
 .friend-message{
     background: #fffbf3;
 }
+.active-status{
+    display: block;
+    width: 10px; 
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+.online{
+    background: #25ee5e;
+}
+.offline{
+    background:red
+}
+.ant-modal {
+    width: 45%!important;
+    top: 5%!important;
+    text-align: center!important;
+  }
+

@@ -1,38 +1,38 @@
 import axios from 'axios';
 import {useState, useEffect} from 'react';
-import { Input} from 'antd';
-import {useSelector} from 'react-redux';
+import { Input, Button } from 'antd';
+import {useSelector, useDispatch} from 'react-redux';
 import TableMainPage from './TableMainPage';
 import Menu from './Menu'
 import Header from '../Header';
 import Newsline from './Newsline';
-
-
+import ModalWindow from '../ModalWindow';
+import {setVisibleModal} from '../../redux/mainReducer'
 
 function Main() {
   const token = localStorage.getItem('token');
+  const dispatch = useDispatch()
   const [data,setData] = useState([])
   const [status,setStatus] = useState(false);
   const [statusData,setStatusData] = useState('');
-  const [photo,setPhoto] = useState('');
   const contsInfo = useSelector((store) => store.data.userDatas);
-  const state = useSelector((store) => store.data.state);
-  const statusAuth = useSelector((store) => store.data.statusAuth);
+  const isVisibleModal = useSelector((store) => store.data.isVisibleModal);
+
   const [sta,setSta] = useState(false)
+  /* const [isModalVisible, setIsModalOpen] = useState(false); */
   
   useEffect(()=>{
     setTimeout(()=>{ axios.post('http://localhost:1000/main',{token}).then(res=>setData(res.data))},500)
     console.log(data)
     },[])
 
-  const date = new Date(data.dateOfBirth);
+    const date = new Date(data.dateOfBirth);
     const currentDate = new Date();
     const yearsDiff = currentDate.getFullYear() - date.getFullYear();
     
    
   function setStatusHandler(){
      setStatus(true)
-
   }
   function editInfoHandler(){
     setSta(true)   
@@ -40,9 +40,7 @@ function Main() {
    function saveInfoHandler(){
   setSta(false)
 
-  console.log('contsInfo',contsInfo)
-  console.log('data',data)
-     
+
   const formData = new FormData();
  
   formData.append('email',  contsInfo.email )
@@ -60,22 +58,19 @@ function Main() {
        'Content-Type': 'multipart/form-data'
      }
    
-  }).then(res=>setData(res.data))
-
-  
-/*   
-  await  axios.post('http://localhost:1000/editprofile',contsInfo).then(res=>setData(res.data)) */
-
-  }
+  }).then(res=>setData(res.data))  }
 
   function saveHandler(){
     const email = data.email;
     setStatus(false)
-  
     axios.post('http://localhost:1000/status',{statusData, email}).then(res=>setData(res.data))
-   
-
   }
+
+  const showModal = () => {
+    dispatch(setVisibleModal(true))
+  };
+
+     
   return (
     <div>
       {data && data.length === 0 ? (<div class="load">
@@ -86,23 +81,21 @@ function Main() {
           <Menu/>      
           <div className='body'>
             <div className='body-content'>
-           
             <div className='body-img' >
              
-            {data && data.image ? (
-              <img width='50%' height='100%' className='body-img-logo' src={`http://localhost:1000/${data && data.image}`} alt="Изображение" />
-            ):<img width='120px'  src="https://i.postimg.cc/x1FJjZnH/icons8-person-80.png" alt="person" />}
-            
+             {data && data.image ? (
+              <img  onClick={showModal}  width='50%' height='100%' className='body-img-logo'  src={`http://localhost:1000/${data && data.image}`} alt="Изображение" />
+            ):<img width='120px'  src="https://i.postimg.cc/x1FJjZnH/icons8-person-80.png" alt="person" />} 
+          {isVisibleModal && <ModalWindow data={data}/>} 
+        
             </div>
            
             <div className='body-name'>
            
-             <div className='name-person'> {data.name}  {data.surname}  {yearsDiff? yearsDiff:''}   {statusAuth?<span className='active'>online</span>:''} </div>
+             <div className='name-person'> {data.name}  {data.surname}  {yearsDiff? yearsDiff:''}   {data.active?<span className='active-status online'></span>:<span className=' active-status offline'></span>}</div>
              
              {!status ?
              <div className='status' onClick={()=>setStatusHandler()}>{(data.status) == "" ?'установите статус': data.status}</div>: <Input onChange={(e)=>setStatusData(e.target.value)} value={statusData} className='input' onBlur={()=>saveHandler()}/>}</div>
-        
-
             </div>  
 
                {/*  {sta? <input type="file" onChange={(e) => setPhoto(e.target.files[0])} />:''} */}
